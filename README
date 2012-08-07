@@ -1,3 +1,3 @@
 1. Picture browser app allows user to view all friends' pictures in a mobile friendly web page. http://picturebrowser.sinaapp.com.
-2. Picture browser app using sina weibo api.
-3. Server-side deploy using django within python version of SAE.
+2. Picture browser app uses sina weibo api.
+3. Server-side deployment uses django within python version of SAE.

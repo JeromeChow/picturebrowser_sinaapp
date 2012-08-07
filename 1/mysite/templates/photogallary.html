@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+	<head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	    <script type="text/javascript" src="http://lib.sinaapp.com/js/jquery/1.7/jquery.min.js"></script>
+	    <script type="text/javascript" src="http://lib.sinaapp.com/js/jquery-mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+	    <link rel="stylesheet" href="http://lib.sinaapp.com/js/jquery-mobile/1.1.0/jquery.mobile-1.1.0.min.css"></link>
+	    <link rel="stylesheet" href="/static/picturebrowser.css"></link>
+	</head>
+	<body>
+	    <!-- Start of first page -->
+	    <div data-role="page" id="photogallarypage" data-title="Photo gallary">
+	    	<div data-role="header">
+	    	    <a href="/" id="btn_backtoindex" class="ui-btn-left" 
+	    	       data-icon="arrow-l"
+	    	       data-theme="a"
+	    	       data-transition="slide"
+	    	       data-direction="reverse">
+	    	       Back
+	    	    </a>
+		        <h1>Photo gallary</h1>
+	        </div><!-- /header -->
+
+	        <div id="content_gallary" data-role="content">
+	            <div id="title_screen_name" style:visibility="hidden">{{ screen_name }}</div>
+		        <ul id="ul_list_pics" data-role="listview" data-theme="d" data-filter="true" data-icon="false" data-inset="true">
+		            {% for photo in photo_list %}
+		                <li data-icon="false"><a href="">
+		                    <div class="my-li-thumb">
+		                        <img width="50" height="50" src="{{ avatar_large }}" />
+		                    </div>
+		                    <h3 class="my-li-name">{{ screen_name }}</h3>
+		                    <p  class="my-li-text">{{ photo.text }}</p>
+		                    <div class="my-li-content">
+	                            <img class="my-li-content-image" src="{{ photo.image }}" />
+	                        </div>
+	                    </a></li>
+                    {% endfor %}
+                </ul>
+                <p><a href="" data-role="button" id="btn_more_pics">View more pictures</a></p>
+	        </div><!-- /content -->
+	        
+		</div>
+	</body>
+</html>

@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+	<head>
+	    <title>{{ screen_name }}的主页</title>
+	    <link rel="apple-touch-icon" href="{{ avatar_large }}">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	    <meta name="apple-mobile-web-app-capable" content="yes" />
+	    <script type="text/javascript" src="http://lib.sinaapp.com/js/jquery/1.7/jquery.min.js"></script>
+	    <script type="text/javascript" src="http://lib.sinaapp.com/js/jquery-mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+	    <link rel="stylesheet" href="http://lib.sinaapp.com/js/jquery-mobile/1.1.0/jquery.mobile-1.1.0.min.css"></link>
+	    <link rel="stylesheet" href="/static/picturebrowser.css"></link>
+        
+        <script type="text/javascript">
+	        $('#friendspage').live('pagecreate', function (event) {
+	            friend_cursor = 20;
+	            friend_cursor_step = 20;
+	            $("#btn_more_friends").live("click",function(){
+                    $.ajax({
+                        url: "/morefriends?friend_cursor="+friend_cursor,
+                        cache: false
+                    }).done(function( html ) {
+                        $("#ul_list_friends").append(html);
+                        $("#ul_list_friends").listview('refresh');
+                        $("#ul_list_friends").find("li:last").show();
+                        friend_cursor += friend_cursor_step;
+                    });
+                });
+                
+                $("#logout").click(function () {
+	                alert("Log out");
+	                $.ajax({
+                        url: "/logout",
+                        cache: false
+                    }).done(function( html ) {
+                        alert("ajax done");
+                    });
+	            });        
+            });
+	    </script>
+	    
+	    <script type="text/javascript">
+	            $('#photogallarypage').live('pagecreate', function (event) {
+	               page = 2;
+	               page_step = 1;
+	               $('#title_screen_name').hide();
+	               $('#btn_more_pics').die('click')
+	               $('#btn_more_pics').live('click',function(event){
+	                   screen_name = $('#title_screen_name').text();
+                       $.ajax({
+                           url: "/morepictures?page="+page+"&name="+screen_name,
+                           cache: false
+                       }).done(function( html ) {
+                           $('#ul_list_pics').append(html);
+                           $('#ul_list_pics').listview('refresh');
+                           $('#ul_list_pics').find("li:last").show();
+                           page += page_step                        
+                       });
+                   });
+                });
+	    </script>
+	</head>
+
+	<body>
+	    <!-- Start of first page -->
+	    <div data-role="page" id="friendspage" data-title="{{ screen_name }}">
+	    	<div data-role="header">
+	    	    <a href="" id="logout" class='ui-btn-right' data-icon='refresh' data-theme="a" >Logout</a>
+		        <h1>{{ screen_name }}</h1>
+	        </div><!-- /header -->
+
+	        <div id="content_index" data-role="content">
+		        <ul id="ul_list_friends" data-role="listview" data-theme="d" data-filter="true" data-inset="true">
+		            <li><a href="photogallary?query_screen_name={{ screen_name }}" data-transition="slide">
+		                <img width="80" height="80" src="{{ avatar_large }}"></img>
+		                <h3>{{ screen_name }}</h3>
+		                <p>{{ description }}</p>
+		            </a></li>
+		            {% for friend in friend_list %}
+		                <li><a href="photogallary?query_screen_name={{ friend.screen_name }}" data-transition="slide">
+	                        <img width="80" height="80" src="{{ friend.avatar_large }}"></img>
+				            <h3>{{ friend.screen_name }}</h3>
+				            <p>{{ friend.description }}</p>
+	                    </a></li>
+                    {% endfor %}
+                </ul>
+		        <p><a href="#" data-role="button" id="btn_more_friends">View more friends</a></p>
+	        </div><!-- /content -->
+	        
+		</div>
+	</body>
+</html>

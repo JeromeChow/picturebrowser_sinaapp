@@ -1,0 +1,32 @@
+div#content_index, div#content_gallary { 
+  padding-right:5px;
+  padding-left:5px;
+}
+
+.my-li-thumb { 
+  float:left;
+  margin-right:5px;
+}
+
+.my-li-name { 
+  margin-top:1em;
+  margin-bottom:1em;
+}
+
+.my-li-text { 
+  max-width:100%; 
+  margin-top:2em; 
+  margin-bottom:1em; 
+  font-size:100%; 
+  word-wrap:break-word; 
+  overflow:hidden; 
+  white-space:normal; 
+}
+
+.my-li-content-image { 
+  max-width: 100%;
+}
+
+.ui-page {
+    -webkit-backface-visibility: hidden;
+}         

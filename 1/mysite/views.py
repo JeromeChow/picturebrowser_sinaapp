@@ -198,15 +198,18 @@ def searchfriend(request):
         
         weibo_client.set_access_token(access_token, expires_in)
         search_result = weibo_client.get.search__suggestions__users(q=search_value)
-        print search_result
-        
+        user_info = weibo_client.get.users__show(screen_name=search_value)
+        result = [entry.screen_name for entry in search_result]
+        if user_info.screen_name not in result:
+            result.insert(0, user_info.screen_name)        
         t = Template(""" 
-                     {% for result in search_result %}
-		                <li><a href="photogallary?query_screen_name={{ result.screen_name }}">
-				            <h3>{{ result.screen_name }}</h3>
+                     {% for name in result %}
+		                <li><a href="photogallary?query_screen_name={{ name }}">
+				            <h3>{{ name }}</h3>
 	                    </a></li>
-                    {% endfor %} """)       
-        c = Context({'search_result':search_result})
+                     {% endfor %} """)
+                     
+        c = Context({'result':result})
         html = t.render(c)
         response = HttpResponse(html)     
         return response

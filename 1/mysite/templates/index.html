@@ -64,12 +64,11 @@
 	            $('#btn_search').die('click')
 	            $('#btn_search').live('click',function(event){
 	                search_value = $('#input_search').val();
-	                alert("Search val is "+search_value);
                     $.ajax({
                         url: "/searchfriend?searchvalue="+search_value,
                         cache: false
                     }).done(function( html ) {
-                        alert("Search friend done");
+                        $('#ul_list_search_result').empty();
                         $('#ul_list_search_result').append(html);
                         $('#ul_list_search_result').listview('refresh');
                         $('#ul_list_search_result').find("li:last").show();

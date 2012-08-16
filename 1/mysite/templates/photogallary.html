@@ -9,21 +9,20 @@
 	</head>
 	<body>
 	    <!-- Start of first page -->
-	    <div data-role="page" id="photogallarypage" data-title="Photo gallary">
-	    	<div data-role="header">
+	    <div data-role="page" id="page_photogallary" data-title="{{ screen_name }}的照片">
+	    	<div data-role="header" data-position="fixed">
 	    	    <a href="/" id="btn_backtoindex" class="ui-btn-left" 
 	    	       data-icon="arrow-l"
 	    	       data-theme="a"
-	    	       data-transition="slide"
 	    	       data-direction="reverse">
-	    	       Back
+	    	       返回
 	    	    </a>
-		        <h1>Photo gallary</h1>
+		        <h1>{{ screen_name }}的照片</h1>
 	        </div><!-- /header -->
 
 	        <div id="content_gallary" data-role="content">
 	            <div id="title_screen_name" style:visibility="hidden">{{ screen_name }}</div>
-		        <ul id="ul_list_pics" data-role="listview" data-theme="d" data-filter="true" data-icon="false" data-inset="true">
+		        <ul id="ul_list_pics" data-role="listview" data-theme="d" data-icon="false" data-inset="true">
 		            {% for photo in photo_list %}
 		                <li data-icon="false"><a href="">
 		                    <div class="my-li-thumb">
@@ -37,7 +36,7 @@
 	                    </a></li>
                     {% endfor %}
                 </ul>
-                <p><a href="" data-role="button" id="btn_more_pics">View more pictures</a></p>
+                <p><a href="" data-role="button" id="btn_more_pics">更多照片</a></p>
 	        </div><!-- /content -->
 	        
 		</div>

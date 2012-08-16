@@ -14,8 +14,8 @@ from weibo import APIClient
 # Static vars
 APP_KEY = '3591066593' # app key/consumer key
 APP_SECRET = 'a9e5ab0fec71ead8fb744ee83682bd57' # app secret/consumer secret
-#CALLBACK_URL = 'http://127.0.0.1:8080/' # local debug call back url, WARNING!! has to be exactly the same as set in api.weibo.com
-CALLBACK_URL = 'http://picturebrowser.sinaapp.com'
+CALLBACK_URL = 'http://127.0.0.1:8080/' # local debug call back url, WARNING!! has to be exactly the same as set in api.weibo.com
+#CALLBACK_URL = 'http://picturebrowser.sinaapp.com'
 
 DEBUG_TRACE = logging.getLogger('mysite.custom')
 
@@ -67,7 +67,6 @@ def index(request):
             # Redirect browser to app main page
             return response
     else:
-        print "printing!"
         # Got request for app main page from browser
         access_token = request.COOKIES['access_token']
         expires_in = request.COOKIES['expires_in']
@@ -111,7 +110,7 @@ def morefriends(request):
         
         t = Template(""" 
                      {% for friend in friend_list %}
-		                <li><a href="photogallary?query_screen_name={{ friend.screen_name }}" data-transition="slide">
+		                <li><a href="photogallary?query_screen_name={{ friend.screen_name }}">
 	                        <img width="80" height="80" src="{{ friend.avatar_large }}"></img>
 				            <h3>{{ friend.screen_name }}</h3>
 				            <p>{{ friend.description }}</p>
@@ -180,17 +179,50 @@ def morepictures(request):
         response = HttpResponse(html)
         return response
 
+def search(request):
+    weibo_client = APIClient(app_key=APP_KEY, app_secret=APP_SECRET, redirect_uri=CALLBACK_URL)
+    if request.COOKIES.has_key('access_token') is False:
+        return HttpResponseRedirect(CALLBACK_URL)
+    else:
+        return render_to_response('search.html', {})
+        
+def searchfriend(request):
+    weibo_client = APIClient(app_key=APP_KEY, app_secret=APP_SECRET, redirect_uri=CALLBACK_URL)
+    if request.COOKIES.has_key('access_token') is False:
+        return HttpResponseRedirect(CALLBACK_URL)
+    else:
+        access_token = request.COOKIES['access_token']
+        expires_in = request.COOKIES['expires_in']
+        uid = request.COOKIES['uid']
+        search_value = request.GET['searchvalue']
+        
+        weibo_client.set_access_token(access_token, expires_in)
+        search_result = weibo_client.get.search__suggestions__users(q=search_value)
+        print search_result
+        
+        t = Template(""" 
+                     {% for result in search_result %}
+		                <li><a href="photogallary?query_screen_name={{ result.screen_name }}">
+				            <h3>{{ result.screen_name }}</h3>
+	                    </a></li>
+                    {% endfor %} """)       
+        c = Context({'search_result':search_result})
+        html = t.render(c)
+        response = HttpResponse(html)     
+        return response
+
 def logout(request):
     weibo_client = APIClient(app_key=APP_KEY, app_secret=APP_SECRET, redirect_uri=CALLBACK_URL)
     if request.COOKIES.has_key('access_token') is False:
-        DEBUG_TRACE.debug("Has no acccess token")
-        return HttpResponseRedirect(CALLBACK_URL)
+        print("Has no acccess token")
     else:
         access_token = request.COOKIES['access_token']
         expires_in = request.COOKIES['expires_in']
         uid = request.COOKIES['uid']
         weibo_client.set_access_token(access_token, expires_in)
         weibo_client.get.account__end_session()
+    response = HttpResponseRedirect(CALLBACK_URL)
+    return response
 
 def debug(request):
     access_token = request.COOKIES['access_token']

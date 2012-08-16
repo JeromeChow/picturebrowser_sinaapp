@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+	<head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	    <script type="text/javascript" src="http://lib.sinaapp.com/js/jquery/1.7/jquery.min.js"></script>
+	    <script type="text/javascript" src="http://lib.sinaapp.com/js/jquery-mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+	    <link rel="stylesheet" href="http://lib.sinaapp.com/js/jquery-mobile/1.1.0/jquery.mobile-1.1.0.min.css"></link>
+	    <link rel="stylesheet" href="/static/picturebrowser.css"></link>
+	</head>
+	<body>
+	    <!-- Start of first page -->
+	    <div data-role="page" id="page_search" data-title="搜索好友">
+	    	<div data-role="header" data-position="fixed">
+	    	    <a href="/" id="btn_backtoindex" class="ui-btn-left" 
+	    	       data-icon="arrow-l"
+	    	       data-theme="a"
+	    	       data-direction="reverse">
+	    	       返回
+	    	    </a>
+		        <h1>搜索好友</h1>
+	        </div><!-- /header -->
+
+	        <div id="content_search" data-role="content">
+	            <!--<div id="title_screen_name" style:visibility="hidden">{{ screen_name }}</div>-->
+	            <input type="search" name="search" id="input_search" value="" />
+	            <p><a href="" data-role="button" data-theme="a" id="btn_search">搜索</a></p>
+		        <ul id="ul_list_search_result" data-role="listview" data-theme="d" data-icon="false" data-inset="true">
+                </ul>
+	        </div><!-- /content -->
+	        
+		</div>
+	</body>
+</html>

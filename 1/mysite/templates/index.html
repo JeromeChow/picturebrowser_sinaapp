@@ -11,7 +11,7 @@
 	    <link rel="stylesheet" href="/static/picturebrowser.css"></link>
         
         <script type="text/javascript">
-	        $('#friendspage').live('pagecreate', function (event) {
+	        $('#page_friends').live('pagecreate', function (event) {
 	            friend_cursor = 20;
 	            friend_cursor_step = 20;
 	            $("#btn_more_friends").live("click",function(){
@@ -39,51 +39,72 @@
 	    </script>
 	    
 	    <script type="text/javascript">
-	            $('#photogallarypage').live('pagecreate', function (event) {
-	               page = 2;
-	               page_step = 1;
-	               $('#title_screen_name').hide();
-	               $('#btn_more_pics').die('click')
-	               $('#btn_more_pics').live('click',function(event){
-	                   screen_name = $('#title_screen_name').text();
-                       $.ajax({
-                           url: "/morepictures?page="+page+"&name="+screen_name,
-                           cache: false
-                       }).done(function( html ) {
-                           $('#ul_list_pics').append(html);
-                           $('#ul_list_pics').listview('refresh');
-                           $('#ul_list_pics').find("li:last").show();
-                           page += page_step                        
-                       });
-                   });
+	        $('#page_photogallary').live('pagecreate', function (event) {
+	            page = 2;
+	            page_step = 1;
+	            $('#title_screen_name').hide();
+	            $('#btn_more_pics').die('click')
+	            $('#btn_more_pics').live('click',function(event){
+	                screen_name = $('#title_screen_name').text();
+                    $.ajax({
+                        url: "/morepictures?page="+page+"&name="+screen_name,
+                        cache: false
+                    }).done(function( html ) {
+                        $('#ul_list_pics').append(html);
+                        $('#ul_list_pics').listview('refresh');
+                        $('#ul_list_pics').find("li:last").show();
+                        page += page_step                        
+                    });
                 });
+             });
+	    </script>
+	    
+	    <script type="text/javascript">
+	        $('#page_search').live('pagecreate', function (event) {
+	            $('#btn_search').die('click')
+	            $('#btn_search').live('click',function(event){
+	                search_value = $('#input_search').val();
+	                alert("Search val is "+search_value);
+                    $.ajax({
+                        url: "/searchfriend?searchvalue="+search_value,
+                        cache: false
+                    }).done(function( html ) {
+                        alert("Search friend done");
+                        $('#ul_list_search_result').append(html);
+                        $('#ul_list_search_result').listview('refresh');
+                        $('#ul_list_search_result').find("li:last").show();
+                    });
+                });
+             });
 	    </script>
 	</head>
 
 	<body>
 	    <!-- Start of first page -->
-	    <div data-role="page" id="friendspage" data-title="{{ screen_name }}">
-	    	<div data-role="header">
-	    	    <a href="" id="logout" class='ui-btn-right' data-icon='refresh' data-theme="a" >Logout</a>
+	    <div data-role="page" id="page_friends" data-title="{{ screen_name }}">
+	        <!-- header -->
+	    	<div data-role="header" data-position="fixed">
+	    	    <a href="search" id="btn_header_search" class='ui-btn-right' data-icon='search' data-theme="a" >搜索</a>
 		        <h1>{{ screen_name }}</h1>
 	        </div><!-- /header -->
-
+	        <!-- content -->
 	        <div id="content_index" data-role="content">
-		        <ul id="ul_list_friends" data-role="listview" data-theme="d" data-filter="true" data-inset="true">
-		            <li><a href="photogallary?query_screen_name={{ screen_name }}" data-transition="slide">
+		        <ul id="ul_list_friends" data-role="listview" data-theme="d" data-inset="true" data-filter="false">
+		            <li><a href="photogallary?query_screen_name={{ screen_name }}">
 		                <img width="80" height="80" src="{{ avatar_large }}"></img>
 		                <h3>{{ screen_name }}</h3>
 		                <p>{{ description }}</p>
 		            </a></li>
 		            {% for friend in friend_list %}
-		                <li><a href="photogallary?query_screen_name={{ friend.screen_name }}" data-transition="slide">
+		                <li><a href="photogallary?query_screen_name={{ friend.screen_name }}" >
 	                        <img width="80" height="80" src="{{ friend.avatar_large }}"></img>
 				            <h3>{{ friend.screen_name }}</h3>
 				            <p>{{ friend.description }}</p>
 	                    </a></li>
                     {% endfor %}
                 </ul>
-		        <p><a href="#" data-role="button" id="btn_more_friends">View more friends</a></p>
+                <p><a href="#" data-role="button" data-theme="d" id="btn_more_friends">更多好友</a></p>
+		        <p><a href="logout" data-role="button" data-theme="a" id="btn_logout">注销 {{ screen_name }}</a></p>
 	        </div><!-- /content -->
 	        
 		</div>
